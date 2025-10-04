@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chikipi's Journey to Space</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            background: #000;
+            color: #fff;
+        }
+
+        .section {
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+        }
+
+        .parallax-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            z-index: -1;
+            transition: opacity 0.5s ease;
+        }
+
+        .bg1 { background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?w=1600'); }
+        .bg2 { background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1541873676-a18131494184?w=1600'); }
+        .bg3 { background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?w=1600'); }
+        .bg4 { background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1446776899648-aa78eefe8ed0?w=1600'); }
+
+        .content-box {
+            max-width: 800px;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(10px);
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeInUp 1s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 10px rgba(102, 126, 234, 0.5)); }
+            to { filter: drop-shadow(0 0 20px rgba(118, 75, 162, 0.8)); }
+        }
+
+        h2 {
+            font-size: 2.5em;
+            margin-bottom: 25px;
+            color: #4fc3f7;
+            text-shadow: 0 0 20px rgba(79, 195, 247, 0.5);
+        }
+
+        p {
+            font-size: 1.3em;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            color: #e0e0e0;
+        }
+
+        .chikipi {
+            width: 200px;
+            height: 200px;
+            margin: 20px;
+            animation: float 3s ease-in-out infinite;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.2);
+        }
+
+        .chikipi img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(-5deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        .hero {
+            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero h1 {
+            font-size: 4.5em;
+            margin-bottom: 30px;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-20px); }
+            60% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        .scroll-indicator::after {
+            content: '↓';
+            font-size: 3em;
+            color: #4fc3f7;
+            text-shadow: 0 0 20px rgba(79, 195, 247, 0.8);
+        }
+
+        .highlight {
+            color: #ffb74d;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(255, 183, 77, 0.5);
+        }
+
+        .facts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .fact-card {
+            background: rgba(79, 195, 247, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid rgba(79, 195, 247, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .fact-card:hover {
+            transform: translateY(-10px);
+            background: rgba(79, 195, 247, 0.2);
+            box-shadow: 0 10px 30px rgba(79, 195, 247, 0.4);
+        }
+
+        .fact-card h3 {
+            color: #4fc3f7;
+            margin-bottom: 10px;
+            font-size: 1.5em;
+        }
+
+        .cta-button {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        }
+
+        .image-float {
+            position: absolute;
+            animation: floatAround 20s infinite ease-in-out;
+            opacity: 0.3;
+            font-size: 60px;
+        }
+
+        @keyframes floatAround {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(50px, -50px) rotate(90deg); }
+            50% { transform: translate(0, -100px) rotate(180deg); }
+            75% { transform: translate(-50px, -50px) rotate(270deg); }
+        }
+
+        .img1 { top: 10%; left: 10%; animation-delay: 0s; }
+        .img2 { top: 20%; right: 15%; animation-delay: 5s; }
+        .img3 { bottom: 15%; left: 15%; animation-delay: 10s; }
+        .img4 { bottom: 10%; right: 10%; animation-delay: 15s; }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5em; }
+            h2 { font-size: 2em; }
+            p { font-size: 1.1em; }
+            .content-box { padding: 30px; }
+            .hero h1 { font-size: 3em; }
+            .chikipi { width: 80px; height: 80px; font-size: 50px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="parallax-bg bg1" id="bg1"></div>
+    <div class="parallax-bg bg2" id="bg2" style="opacity: 0;"></div>
+    <div class="parallax-bg bg3" id="bg3" style="opacity: 0;"></div>
+    <div class="parallax-bg bg4" id="bg4" style="opacity: 0;"></div>
+
+    <div class="image-float img1">⭐</div>
+    <div class="image-float img2">🌙</div>
+    <div class="image-float img3">🚀</div>
+    <div class="image-float img4">🛸</div>
+
+    <section class="section hero">
+        <div class="chikipi"><img src="https://github.com/user-attachments/assets/b1b1e2b0-5f3e-4e0f-b5b7-13c1e0e67f88" alt="Chikipi"></div>
+        <h1>Chikipi's Journey to Space</h1>
+        <p style="font-size: 1.5em; max-width: 600px; text-align: center;">
+            Follow Chikipi the curious chicken on an extraordinary adventure to the stars!
+        </p>
+        <div class="scroll-indicator"></div>
+    </section>
+
+    <section class="section" data-section="1">
+        <div class="content-box">
+            <h2>🎥 The Dream Begins</h2>
+            <div class="chikipi"><img src="https://github.com/user-attachments/assets/3a5a3c7f-50b5-48e3-9a4d-9fdd6eeb0c2c" alt="Chikipi watching ISS video"></div>
+            <p>
+                One day, Chikipi the chicken was watching a YouTube video about the <span class="highlight">International Space Station (ISS)</span>. His little eyes grew wide with wonder as he saw astronauts floating in space, doing incredible science experiments, and looking down at Earth from space!
+            </p>
+            <p>
+                "I want to go there too!" chirped Chikipi excitedly. He learned that the ISS orbits Earth at <span class="highlight">408 kilometers above us</span>, traveling at an amazing speed of <span class="highlight">28,000 km/h</span>!
+            </p>
+        </div>
+    </section>
+
+    <section class="section" data-section="2">
+        <div class="content-box">
+            <h2>🪟 The Amazing Cupola</h2>
+            <div class="chikipi"><img src="https://github.com/user-attachments/assets/e5f73c9a-aa2d-420d-8f3d-a74f9c52116d" alt="Chikipi at Cupola"></div>
+            <p>
+                Chikipi discovered something magical called the <span class="highlight">Cupola</span> - a special room on the ISS with seven windows! It's like a observatory in space where astronauts can see Earth, stars, and even watch spacewalks.
+            </p>
+            <div class="facts-grid">
+                <div class="fact-card">
+                    <h3>7 Windows</h3>
+                    <p>The Cupola has the largest windows ever in space!</p>
+                </div>
+                <div class="fact-card">
+                    <h3>360° View</h3>
+                    <p>See Earth, stars, and space from every angle!</p>
+                </div>
+                <div class="fact-card">
+                    <h3>Best Seat</h3>
+                    <p>Astronauts' favorite place to take photos of Earth!</p>
+                </div>
+            </div>
+            <p style="margin-top: 30px;">
+                "I must see that view!" thought Chikipi. But first, he needed training...
+            </p>
+        </div>
+    </section>
+
+    <section class="section" data-section="3">
+        <div class="content-box">
+            <h2>🏊 Training at the NBL</h2>
+            <div class="chikipi"><img src="https://github.com/user-attachments/assets/3a7e3c7f-50b5-48e3-9a4d-9fdd6eeb0c2d" alt="Chikipi training underwater"></div>
+            <p>
+                Chikipi learned that astronauts train at the <span class="highlight">Neutral Buoyancy Laboratory (NBL)</span> - a giant swimming pool that's as deep as a 12-story building! This special pool helps astronauts practice for spacewalks.
+            </p>
+            <p>
+                The NBL pool contains <span class="highlight">23.5 million liters of water</span> and is <span class="highlight">12 meters deep</span>! Being underwater feels similar to floating in space (microgravity), so it's perfect for training.
+            </p>
+            <div class="facts-grid">
+                <div class="fact-card">
+                    <h3>Full-Size ISS</h3>
+                    <p>Practice on real ISS mockups underwater!</p>
+                </div>
+                <div class="fact-card">
+                    <h3>Spacesuit Training</h3>
+                    <p>Learn to work in a bulky spacesuit!</p>
+                </div>
+                <div class="fact-card">
+                    <h3>6-7 Hours</h3>
+                    <p>Each training session lasts as long as a real spacewalk!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" data-section="4">
+        <div class="content-box">
+            <h2>🎈 Experiencing Microgravity</h2>
+            <div class="chikipi"><img src="https://github.com/user-attachments/assets/8f5f3c7f-50b5-48e3-9a4d-9fdd6eeb0c2e" alt="Chikipi floating in microgravity"></div>
+            <p>
+                Chikipi couldn't wait to experience <span class="highlight">microgravity</span> - that amazing feeling of floating! In space, there's almost no gravity, so everything floats: astronauts, equipment, even water droplets dance in the air!
+            </p>
+            <div class="facts-grid">
+                <div class="fact-card">
+                    <h3>✨ No Up or Down</h3>
+                    <p>In space, any direction can be "up"!</p>
+                </div>
+                <div class="fact-card">
+                    <h3>🎪 Floating Fun</h3>
+                    <p>Do somersaults and fly like a superhero!</p>
+                </div>
+                <div class="fact-card">
+                    <h3>🔬 Space Science</h3>
+                    <p>See how liquids form perfect spheres in space!</p>
+                </div>
+                <div class="fact-card">
+                    <h3>🍎 Space Food</h3>
+                    <p>Chase your floating snacks around the station!</p>
+                </div>
+            </div>
+            <p style="margin-top: 30px;">
+                Chikipi imagined himself doing slow-motion flips and floating from window to window, feathers puffed up with excitement!
+            </p>
+        </div>
+    </section>
+
+    <section class="section" data-section="4">
+        <div class="content-box" style="text-align: center;">
+            <h2>🌟 Chikipi's Dream Comes True!</h2>
+            <div class="chikipi" style="width: 250px; height: 250px;"><img src="https://github.com/user-attachments/assets/9f5f3c7f-50b5-48e3-9a4d-9fdd6eeb0c2f" alt="Chikipi in Cupola viewing Earth"></div>
+            <p>
+                After all his training, Chikipi finally made it to the ISS! He floated through the Cupola's windows, watching Earth spin below with its blue oceans, green forests, and swirling white clouds.
+            </p>
+            <p>
+                "This is the most amazing view in the universe!" chirped Chikipi, doing a happy zero-gravity flip. <span class="highlight">He proved that with curiosity, determination, and hard work, anyone can reach for the stars!</span>
+            </p>
+            <a href="https://www.nasa.gov/international-space-station/" target="_blank" class="cta-button">
+                Explore More About ISS 🚀
+            </a>
+            <div style="margin-top: 40px; padding: 30px; background: rgba(255, 183, 77, 0.1); border-radius: 15px; border: 1px solid rgba(255, 183, 77, 0.3);">
+                <h3 style="color: #ffb74d; margin-bottom: 15px;">Want to Learn More?</h3>
+                <p style="font-size: 1.1em;">Visit NASA's website to explore:</p>
+                <p>• <a href="https://www.nasa.gov/johnson/neutral-buoyancy-laboratory/" target="_blank" style="color: #4fc3f7;">Neutral Buoyancy Laboratory</a></p>
+                <p>• <a href="https://www.nasa.gov/international-space-station/space-station-research-and-technology/" target="_blank" style="color: #4fc3f7;">ISS Research & Technology</a></p>
+                <p>• <a href="https://images.nasa.gov/" target="_blank" style="color: #4fc3f7;">NASA Image Gallery</a></p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const sections = document.querySelectorAll('.section');
+        const backgrounds = [
+            document.getElementById('bg1'),
+            document.getElementById('bg2'),
+            document.getElementById('bg3'),
+            document.getElementById('bg4')
+        ];
+
+        function updateParallax() {
+            const scrolled = window.pageYOffset;
+            const windowHeight = window.innerHeight;
+            
+            sections.forEach((section, index) => {
+                const rect = section.getBoundingClientRect();
+                const sectionMiddle = rect.top + rect.height / 2;
+                const distanceFromCenter = Math.abs(sectionMiddle - windowHeight / 2);
+                const maxDistance = windowHeight;
+                const opacity = 1 - (distanceFromCenter / maxDistance);
+
+                if (backgrounds[index]) {
+                    backgrounds[index].style.opacity = Math.max(0, opacity);
+                }
+
+                // Parallax effect for content
+                const contentBox = section.querySelector('.content-box');
+                if (contentBox && rect.top < windowHeight && rect.bottom > 0) {
+                    const parallaxSpeed = (scrolled - section.offsetTop) * 0.1;
+                    contentBox.style.transform = `translateY(${parallaxSpeed}px)`;
+                }
+            });
+        }
+
+        window.addEventListener('scroll', updateParallax);
+        window.addEventListener('load', updateParallax);
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Enhance floating animation for images as they come into view
+        const chikipis = document.querySelectorAll('.chikipi');
+        window.addEventListener('scroll', () => {
+            chikipis.forEach(chikipi => {
+                const rect = chikipi.getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    chikipi.style.opacity = '1';
+                    chikipi.style.transform = 'scale(1)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
