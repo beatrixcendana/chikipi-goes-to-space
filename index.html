@@ -99,17 +99,20 @@
         .chikipi {
             width: 500px;
             height: 500px;
-            margin: 20px;
+            margin: 20px auto;
             animation: float 3s ease-in-out infinite;
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(255, 255, 255, 0.2);
+            display: block;
         }
 
         .chikipi img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
+            display: block;
+            background: rgba(255, 255, 255, 0.1);
         }
 
         @keyframes float {
@@ -171,6 +174,8 @@
             border-radius: 15px;
             border: 1px solid rgba(79, 195, 247, 0.3);
             transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
         }
 
         .fact-card:hover {
@@ -183,6 +188,127 @@
             color: #4fc3f7;
             margin-bottom: 10px;
             font-size: 1.5em;
+        }
+
+        .fact-card::after {
+            content: '👆 Click to learn more';
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 0.8em;
+            color: #4fc3f7;
+            opacity: 0.7;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 700px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: zoomIn 0.4s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            border: 2px solid rgba(79, 195, 247, 0.5);
+        }
+
+        .modal-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .modal-content::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        .modal-content::-webkit-scrollbar-thumb {
+            background: rgba(79, 195, 247, 0.5);
+            border-radius: 10px;
+        }
+
+        .modal-image {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-caption {
+            text-align: center;
+            font-size: 0.9em;
+            color: rgba(255, 255, 255, 0.8);
+            font-style: italic;
+            margin-top: -10px;
+            margin-bottom: 20px;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2.5em;
+            color: #fff;
+            cursor: pointer;
+            background: none;
+            border: none;
+            line-height: 1;
+            transition: transform 0.3s ease;
+        }
+
+        .modal-close:hover {
+            transform: rotate(90deg) scale(1.2);
+            color: #4fc3f7;
+        }
+
+        .modal-content h2 {
+            color: #fff;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            text-shadow: 0 0 20px rgba(79, 195, 247, 0.8);
+        }
+
+        .modal-content p {
+            color: #fff;
+            font-size: 1.3em;
+            line-height: 1.8;
         }
 
         .cta-button {
@@ -229,7 +355,7 @@
             p { font-size: 1.1em; }
             .content-box { padding: 30px; }
             .hero h1 { font-size: 3em; }
-            .chikipi { width: 80px; height: 80px; font-size: 50px; }
+            .chikipi { width: 150px; height: 150px; }
         }
     </style>
 </head>
@@ -274,15 +400,15 @@
                 Chikipi discovered something magical called the <span class="highlight">Cupola</span> - a special room on the ISS with seven windows! It's like a observatory in space where astronauts can see Earth, stars, and even watch spacewalks.
             </p>
             <div class="facts-grid">
-                <div class="fact-card">
+                <div class="fact-card" data-fact="cupola1">
                     <h3>7 Windows</h3>
                     <p>The Cupola has the largest windows ever in space!</p>
                 </div>
-                <div class="fact-card">
+                <div class="fact-card" data-fact="cupola2">
                     <h3>360° View</h3>
                     <p>See Earth, stars, and space from every angle!</p>
                 </div>
-                <div class="fact-card">
+                <div class="fact-card" data-fact="cupola3">
                     <h3>Best Seat</h3>
                     <p>Astronauts' favorite place to take photos of Earth!</p>
                 </div>
@@ -304,15 +430,15 @@
                 The NBL pool contains <span class="highlight">23.5 million liters of water</span> and is <span class="highlight">12 meters deep</span>! Being underwater feels similar to floating in space (microgravity), so it's perfect for training.
             </p>
             <div class="facts-grid">
-                <div class="fact-card">
+                <div class="fact-card" data-fact="nbl1">
                     <h3>Full-Size ISS</h3>
                     <p>Practice on real ISS mockups underwater!</p>
                 </div>
-                <div class="fact-card">
+                <div class="fact-card" data-fact="nbl2">
                     <h3>Spacesuit Training</h3>
                     <p>Learn to work in a bulky spacesuit!</p>
                 </div>
-                <div class="fact-card">
+                <div class="fact-card" data-fact="nbl3">
                     <h3>6-7 Hours</h3>
                     <p>Each training session lasts as long as a real spacewalk!</p>
                 </div>
@@ -328,19 +454,19 @@
                 Chikipi couldn't wait to experience <span class="highlight">microgravity</span> - that amazing feeling of floating! In space, there's almost no gravity, so everything floats: astronauts, equipment, even water droplets dance in the air!
             </p>
             <div class="facts-grid">
-                <div class="fact-card">
+                <div class="fact-card" data-fact="micro1">
                     <h3>✨ No Up or Down</h3>
                     <p>In space, any direction can be "up"!</p>
                 </div>
-                <div class="fact-card">
+                <div class="fact-card" data-fact="micro2">
                     <h3>🎪 Floating Fun</h3>
                     <p>Do somersaults and fly like a superhero!</p>
                 </div>
-                <div class="fact-card">
+                <div class="fact-card" data-fact="micro3">
                     <h3>🔬 Space Science</h3>
                     <p>See how liquids form perfect spheres in space!</p>
                 </div>
-                <div class="fact-card">
+                <div class="fact-card" data-fact="micro4">
                     <h3>🍎 Space Food</h3>
                     <p>Chase your floating snacks around the station!</p>
                 </div>
@@ -354,7 +480,7 @@
     <section class="section" data-section="4">
         <div class="content-box" style="text-align: center;">
             <h2>🌟 Chikipi's Dream Comes True!</h2>
-            <div class="chikipi" style="width: 250px; height: 250px;"><img src="chikipi-images/chikipi-background-2.png" alt="Chikipi in Cupola viewing Earth"></div>
+            <div class="chikipi" style="width: 500px; height: 500px;"><img src="chikipi-images/chikipi-background-2.png" alt="Chikipi in Cupola viewing Earth"></div>
             <p>
                 After all his training, Chikipi finally made it to the ISS! He floated through the Cupola's windows, watching Earth spin below with its blue oceans, green forests, and swirling white clouds.
             </p>
@@ -373,6 +499,17 @@
             </div>
         </div>
     </section>
+
+    <!-- Modal Popup -->
+    <div class="modal" id="factModal">
+        <div class="modal-content">
+            <button class="modal-close" id="closeModal">&times;</button>
+            <h2 id="modalTitle"></h2>
+            <img id="modalImage" class="modal-image" src="" alt="">
+            <p class="modal-caption" id="modalCaption"></p>
+            <p id="modalText"></p>
+        </div>
+    </div>
 
     <script>
         const sections = document.querySelectorAll('.section');
@@ -431,6 +568,111 @@
                     chikipi.style.transform = 'scale(1)';
                 }
             });
+        });
+
+        // Modal functionality
+        const modal = document.getElementById('factModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalText = document.getElementById('modalText');
+        const modalImage = document.getElementById('modalImage');
+        const modalCaption = document.getElementById('modalCaption');
+        const closeModal = document.getElementById('closeModal');
+        const factCards = document.querySelectorAll('.fact-card');
+
+        const factDetails = {
+            'cupola1': {
+                title: '7 Amazing Windows to the Universe',
+                image: './images/facts/cupola-windows.jpg',
+                caption: 'The Cupola module with its seven windows providing panoramic views of Earth',
+                text: 'The Cupola module has seven windows - six around the sides and one big window on top! The largest window is 80 cm in diameter, making it the biggest window ever sent to space. These windows are made of special materials to protect against micrometeoroids and radiation while giving astronauts crystal-clear views of Earth and space. Each window has multiple panes and shutters that can be closed when not in use.'
+            },
+            'cupola2': {
+                title: 'A 360° Space Observatory',
+                image: './images/facts/cupola-360view.jpg',
+                caption: 'Astronaut working at the Cupola with Earth visible through the windows',
+                text: 'From the Cupola, astronauts can see in almost every direction! They use it to control the robotic arm, watch spacecraft arrive and depart, observe spacewalks, and take breathtaking photos of Earth. The Cupola rotates with the ISS every 90 minutes, giving astronauts views of sunrise and sunset 16 times a day! It\'s like having the best seat at a cosmic IMAX theater.'
+            },
+            'cupola3': {
+                title: 'The Ultimate Photography Studio',
+                image: './images/facts/earth-from-cupola.jpg',
+                caption: 'Stunning Earth photography captured from the Cupola',
+                text: 'Over 95% of the stunning Earth photos you see from the ISS are taken from the Cupola! Astronauts love spending their free time here, capturing images of cities at night, storms, auroras, and Earth\'s geography. The Cupola also serves as the command center for robotics operations - astronauts use it to guide the Canadarm2 robotic arm to capture visiting spacecraft and move equipment outside the station.'
+            },
+            'nbl1': {
+                title: 'The Giant Underwater ISS Replica',
+                image: './images/facts/nbl-pool.jpg',
+                caption: 'Aerial view of the massive Neutral Buoyancy Laboratory pool with ISS mockups',
+                text: 'The Neutral Buoyancy Laboratory has full-scale mockups of ISS modules submerged in the pool! These replicas are incredibly detailed, matching the real ISS equipment down to every switch and panel. Astronauts spend hundreds of hours training underwater, practicing every task they\'ll do during their spacewalks. The pool is so big - 62 meters long and 31 meters wide - that it can fit the entire ISS truss structure!'
+            },
+            'nbl2': {
+                title: 'Training in 300-Pound Spacesuits',
+                image: './images/facts/spacesuit-training.jpg',
+                caption: 'Astronaut training underwater in a full spacesuit with diver support',
+                text: 'The spacesuits used in NBL training weigh about 140 kg (300 pounds) on land! Underwater, they\'re carefully weighted to be neutrally buoyant, so astronauts can simulate the feeling of floating in space. Each training session requires a team of scuba divers to help astronauts stay safe and properly positioned. Learning to work in these bulky suits takes months of practice - astronauts must master tasks like turning bolts and handling tools while wearing thick gloves!'
+            },
+            'nbl3': {
+                title: 'Marathon Training Sessions',
+                image: './images/facts/nbl-training-session.jpg',
+                caption: 'Astronauts during an intense 6-hour underwater training session',
+                text: 'Each NBL training run lasts 6-7 hours, just like real spacewalks! Astronauts are underwater for the entire time, practicing every single step of their mission. This is exhausting work - even though they\'re weightless underwater, moving in the bulky spacesuits requires tremendous physical effort. Before their space mission, astronauts typically complete 10-12 full NBL training sessions to prepare for each spacewalk they\'ll perform.'
+            },
+            'micro1': {
+                title: 'Zero Gravity, Infinite Possibilities',
+                image: './images/facts/zero-gravity.jpg',
+                caption: 'Astronauts demonstrating orientation freedom in microgravity',
+                text: 'In microgravity, there is no "up" or "down"! Astronauts can stand on the ceiling, float sideways, or work upside down - it all feels the same. The ISS is designed so every surface could be a floor, with handrails and foot restraints everywhere. New astronauts often experience space adaptation syndrome (similar to motion sickness) until their brains adjust to having no gravity reference. But once adapted, they can perform amazing acrobatics!'
+            },
+            'micro2': {
+                title: 'The Ultimate Playground',
+                image: './images/facts/astronaut-floating.jpg',
+                caption: 'Astronaut performing acrobatic maneuvers inside the ISS',
+                text: 'Astronauts can do incredible things in microgravity! They can float from one end of the ISS to the other with just a gentle push, do multiple somersaults without touching anything, and even play with their food (though NASA prefers they don\'t!). Some astronauts juggle objects, create floating water spheres, or race through the modules. Chris Hadfield even played guitar while floating! Moving in zero-g requires learning new techniques - instead of walking, astronauts "swim" through the air.'
+            },
+            'micro3': {
+                title: 'Science in Zero Gravity',
+                image: './images/facts/space-science.jpg',
+                caption: 'Water forming a perfect sphere in microgravity during an experiment',
+                text: 'Without gravity, liquids behave in fascinating ways! Water forms perfect spheres due to surface tension, and flames burn in round balls instead of pointing upward. Scientists on the ISS study how plants grow, how metals and crystals form, and how the human body adapts without gravity. These experiments help us understand fundamental physics and could lead to better medicines, stronger materials, and preparation for long-duration space missions to Mars!'
+            },
+            'micro4': {
+                title: 'Space Food Adventures',
+                image: './images/facts/space-food.jpg',
+                caption: 'Astronaut catching floating food in the ISS',
+                text: 'Eating in space is quite different from Earth! Food floats away if not contained, so meals come in special pouches or containers. Liquids form floating blobs that astronauts have to catch with their mouths (or special pouches with straws). Crumbs are dangerous because they float around and could get into equipment or be breathed in, so astronauts eat tortillas instead of bread. Popular space foods include rehydrated scrambled eggs, freeze-dried ice cream, and special thermostabilized meals. Some astronauts love creating floating M&M trails and catching them!'
+            }
+        };
+
+        factCards.forEach(card => {
+            card.addEventListener('click', function() {
+                const factId = this.getAttribute('data-fact');
+                const fact = factDetails[factId];
+                
+                if (fact) {
+                    modalTitle.textContent = fact.title;
+                    modalImage.src = fact.image;
+                    modalImage.alt = fact.title;
+                    modalCaption.textContent = fact.caption;
+                    modalText.textContent = fact.text;
+                    modal.classList.add('active');
+                }
+            });
+        });
+
+        closeModal.addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                modal.classList.remove('active');
+            }
         });
     </script>
 </body>
